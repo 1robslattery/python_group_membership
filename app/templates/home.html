@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+<style>
+.btn {
+  /* background-color: DodgerBlue; */
+  border: none;
+  color: black;
+  padding: 12px 16px;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+  background-color: RoyalBlue;
+}
+</style>
+	<title>Group Home</title>
+</head>
+<body>
+
+	{% if messages %}
+	<ul class="messages">
+		{% for message in messages %}
+		<li style="color: red;"> {{ message }}</li>
+		{% endfor %}
+	</ul>
+	{% endif %}
+
+<div class="container-fluid">
+	<p><h1>Hi, {{loggedinUser.firstname}}!</h1>  <a href="/logout"><button>Logout</button></a></p>
+
+	<div class="row">
+		<div class="col-sm-4">
+			<p><h3>Here are the organizations you may join:</h3></p>
+				{% for group in allGroups %}
+					<p><b><a href="/groups/{{group.id}}">{{group.org_grp_name}}</a></b></p>
+					<p><b>Members:</b> -{{group.members.count}}-</p>
+					<p>{{group.desc}}</p>
+					{% if loggedinUser == group.grpcreator %}
+						<a href="/delete/{{group.id}}"><button class="btn"><i class="fa fa-close"></i></button></a>
+					{% endif %}
+				{% endfor %}
+		</div>
+
+		<div class="col-sm-8">
+			<form action="/creategroup" method="post">
+				{% csrf_token %}
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<p>Create a new group:</p>
+						<p><b>Group Name:</b> <input type="text" name="org_grp_name" id=""></p>
+						<p><b>Description:</b> <textarea name="desc" id="" cols="30" rows="5"></textarea></p>
+
+						<p><input type="submit" value="Submit"></p>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

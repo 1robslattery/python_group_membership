@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Group Details</title>
+</head>
+<body>
+
+<p><a href="/groups"><button><b>Dashboard</b></button></a>  <b>|</b>  <a href="/logout"><button><b>Logout</b></button></a></b></p>
+
+
+	{% for grp in groupDetails %}
+
+		{% if loggedinUser in grp.members.all %}
+			<a href="/leave_group/{{grp.id}}"><button><b>Leave Group</b></button></a>
+		{% else %}
+			<a href="/join_group/{{grp.id}}"><button><b>Join Group</b></button></a>
+		{% endif %}
+
+		<p><b>{{grp.org_grp_name}}</b></p>
+		<p>{{grp.desc}}</p>
+		<p><b>Created By:</b>  {{grp.grpcreator.lastname}}, {{grp.grpcreator.firstname}}</p>
+
+		<p><b>Members:</b></p>
+		{% for user in grp.members.all %}
+			<p>{{user.firstname}} {{user.lastname}}</p>
+		{% endfor %}
+
+	{% endfor %}
+
+
+
+</body>
+</html>
